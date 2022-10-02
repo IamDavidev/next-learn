@@ -39,6 +39,12 @@ module.exports = {
       "warn", {
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
+    ],
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": false
+      }
     ]
   }
 }
