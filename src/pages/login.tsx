@@ -1,12 +1,14 @@
-import { Button, Container, Input, Text } from '@nextui-org/react';
-
 import type { NextPage } from 'next';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 
+import { Button, Container, Input } from '@nextui-org/react';
 import { Controller, useForm } from 'react-hook-form';
+
+import ErrroMessage from '~components/ErrroMessage';
 import { AuthContext } from '~lib/context';
 
 const VALID_PASSWORD = 'test123';
+const ERRRO_MESSAGE = 'Failed to login with Email And Password';
 
 interface InputsUseForm {
 	email: string;
@@ -15,18 +17,25 @@ interface InputsUseForm {
 
 const LoginPage: NextPage = (): JSX.Element => {
 	const { handleSubmit, control } = useForm<InputsUseForm>();
+
 	const [error, setError]: [boolean, Dispatch<SetStateAction<boolean>>] =
 		useState(false);
 	const { setAuth } = useContext(AuthContext);
 
-	const onSubmit = handleSubmit((data: InputsUseForm) => {
+	const onSubmit = handleSubmit((data: InputsUseForm): void => {
 		const { password } = data;
 
-		if (password !== VALID_PASSWORD) return console.error('Invalid Data');
+		if (password !== VALID_PASSWORD) {
+			console.error('Invalid Data');
+
+			setError(true);
+
+			setTimeout((): void => {
+				setError(false);
+			}, 3000);
+		}
 
 		localStorage.setItem('isAuth', JSON.stringify(true));
-		// only test : ---
-		document.cookie = 'isAuth:True';
 		setAuth(true);
 	});
 
@@ -52,17 +61,18 @@ const LoginPage: NextPage = (): JSX.Element => {
 						control={control}
 						defaultValue='...'
 						render={({ field }): JSX.Element => (
-							<Input
-								{...field}
-								clearable
-								bordered
-								labelPlaceholder='Name'
-								id='name_form'
-								type='text'
-							/>
+							<label>
+								<Input
+									{...field}
+									clearable
+									bordered
+									labelPlaceholder='Name'
+									id='name_form'
+									type='text'
+								/>
+							</label>
 						)}
 					/>
-
 					<Controller
 						name={'password'}
 						control={control}
@@ -94,7 +104,7 @@ const LoginPage: NextPage = (): JSX.Element => {
 					</Button>
 				</Container>
 			</form>
-			<Container></Container>
+			<Container>{error && <ErrroMessage msg={ERRRO_MESSAGE} />}</Container>
 		</Container>
 	);
 };

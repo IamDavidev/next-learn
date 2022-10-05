@@ -11,8 +11,7 @@ export const AuthContextProvider: FC<PropsAuthContextProvider> = ({
 	children,
 }): JSX.Element => {
 	const [auth, setAuth]: [boolean, Dispatch<SetStateAction<boolean>>] =
-		useState(false);
-	console.log('🚀 ~ file: AuthContext.tsx ~ line 14 ~ auth', auth);
+		useState<boolean>(false);
 
 	return (
 		<>
