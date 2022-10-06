@@ -7,6 +7,12 @@ import { AuthContextProvider } from '~lib/context';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 	console.log('render My app ');
+
+	console.info(
+		'🚀 ~>  file: _app.tsx ~>  line 9 ~>  MyApp ~>  pageProps',
+		pageProps
+	);
+
 	return (
 		<NextUIProvider theme={theme}>
 			<AuthContextProvider>

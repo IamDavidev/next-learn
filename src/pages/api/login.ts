@@ -11,7 +11,6 @@ export default function LoginController(
 	res: NextApiResponse
 ): void {
 	const { method, body } = req;
-
 	if (method !== 'POST')
 		return res.status(405).json({
 			error: 'Error: Method  no Valid',
@@ -24,9 +23,7 @@ export default function LoginController(
 	}: {
 		email: string;
 		password: string;
-	} = body;
-
-	console.log('🚀 ~ file: login.ts ~ line 22 ~ password', password);
+	} = JSON.parse(body);
 
 	if (email === undefined || password === undefined)
 		return res.status(400).send({
@@ -41,6 +38,7 @@ export default function LoginController(
 		serialize(COOKIE_AUTH, DEFAULT_VALUE_COOKIE_EXAMPLE, {
 			httpOnly: true,
 			sameSite: 'lax',
+			path: '/',
 			expires: generateExpireCookie(),
 		})
 	);

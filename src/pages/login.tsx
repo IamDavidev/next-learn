@@ -1,4 +1,8 @@
-import type { NextPage } from 'next';
+import type {
+	GetServerSideProps,
+	InferGetServerSidePropsType,
+	NextPage,
+} from 'next';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 
 import { Button, Container, Input } from '@nextui-org/react';
@@ -14,29 +18,49 @@ interface InputsUseForm {
 	email: string;
 	password: string;
 }
+interface DataServerSide {
+	name: string;
+	password: string;
+}
 
-const LoginPage: NextPage = (): JSX.Element => {
+const LoginPage: NextPage = ({
+	data,
+}: InferGetServerSidePropsType<typeof getServerSideProps>): JSX.Element => {
+	console.info('🚀 ~>  file: login.tsx ~>  line 24 ~>  data', data);
+
 	const { handleSubmit, control } = useForm<InputsUseForm>();
 
 	const [error, setError]: [boolean, Dispatch<SetStateAction<boolean>>] =
 		useState(false);
+
 	const { setAuth } = useContext(AuthContext);
 
-	const onSubmit = handleSubmit((data: InputsUseForm): void => {
-		const { password } = data;
+	const onSubmit = handleSubmit(async (data: InputsUseForm): Promise<void> => {
+		const { password, email } = data;
 
 		if (password !== VALID_PASSWORD) {
 			console.error('Invalid Data');
-
 			setError(true);
-
 			setTimeout((): void => {
 				setError(false);
 			}, 3000);
 		}
 
-		localStorage.setItem('isAuth', JSON.stringify(true));
-		setAuth(true);
+		const dataUser = {
+			email,
+			password,
+		};
+
+		await fetch('/api/login', {
+			method: 'POST',
+			body: JSON.stringify(dataUser),
+		})
+			.then(async res => await res.json())
+			.then(data => {
+				console.log(data);
+				localStorage.setItem('isAuth', JSON.stringify(true));
+				setAuth(true);
+			});
 	});
 
 	return (
@@ -107,6 +131,26 @@ const LoginPage: NextPage = (): JSX.Element => {
 			<Container>{error && <ErrroMessage msg={ERRRO_MESSAGE} />}</Container>
 		</Container>
 	);
+};
+
+export const getServerSideProps: GetServerSideProps<any> = ({ req }): any => {
+	console.log(req.cookies);
+	const { cookies } = req;
+
+	const tokenCookies = cookies.AUTH_TOKEN;
+
+	if (tokenCookies) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
+	}
+
+	return {
+		props: {},
+	};
 };
 
 export default LoginPage;
