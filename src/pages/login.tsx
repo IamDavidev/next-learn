@@ -11,6 +11,7 @@ import { Controller, useForm } from 'react-hook-form';
 import ErrroMessage from '~components/ErrroMessage';
 import { AuthContext } from '~lib/context';
 import { useRouter } from 'next/router';
+import { chekAuthPublic } from '~lib/auth';
 
 const VALID_PASSWORD = 'test123';
 const ERRRO_MESSAGE = 'Failed to login with Email And Password';
@@ -47,21 +48,23 @@ const LoginPage: NextPage = ({
 			password,
 		};
 
-		await fetch('/api/login', {
-			method: 'POST',
-			body: JSON.stringify(dataUser),
-		})
-			.then(async res => await res.json())
-			.then(data => {
-				console.log(data);
-				localStorage.setItem('isAuth', JSON.stringify(true));
-				setAuth(true);
+		try {
+			await fetch('/api/login', {
+				method: 'POST',
+				body: JSON.stringify(dataUser),
 			})
-			.catch(err => {
-				console.error(err);
-			});
+				.then(async res => await res.json())
+				.then(data => {
+					console.log(data);
+					localStorage.setItem('isAuth', JSON.stringify(true));
+					setAuth(true);
+				});
 
-		await router.push('/profile');
+			await router.push('/profile');
+		} catch (err) {
+			console.error('Error', err);
+			throw new Error("Errro : Can't Login");
+		}
 	});
 
 	return (
@@ -133,24 +136,10 @@ const LoginPage: NextPage = ({
 	);
 };
 
-export const getServerSideProps: GetServerSideProps<any> = ({ req }): any => {
-	console.log(req.cookies);
-	const { cookies } = req;
-
-	const tokenCookies = cookies.AUTH_TOKEN;
-
-	if (tokenCookies !== undefined) {
-		return {
-			redirect: {
-				destination: '/',
-				permanent: false,
-			},
-		};
-	}
-
-	return {
-		props: {},
-	};
-};
+export const getServerSideProps: GetServerSideProps<any> = ({ req }): any =>
+	chekAuthPublic({
+		req,
+		path: '/',
+	});
 
 export default LoginPage;
