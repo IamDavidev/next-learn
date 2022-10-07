@@ -1,5 +1,5 @@
 import type { GetServerSideProps, NextPage } from 'next';
-import { chekAuthLogged } from '~lib/auth';
+import { withAuth } from '~lib/auth/withAuth';
 
 const AuthPage: NextPage = (): JSX.Element => {
 	return (
@@ -16,8 +16,8 @@ const AuthPage: NextPage = (): JSX.Element => {
 
 export default AuthPage;
 
-export const getServerSideProps: GetServerSideProps = ({ req }): any =>
-	chekAuthLogged({
-		req,
-		path: '/login',
-	});
+export const getServerSideProps: GetServerSideProps = withAuth(() => {
+	return {
+		props: {},
+	};
+}, '/login');

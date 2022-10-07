@@ -11,7 +11,7 @@ import { Controller, useForm } from 'react-hook-form';
 import ErrroMessage from '~components/ErrroMessage';
 import { AuthContext } from '~lib/context';
 import { useRouter } from 'next/router';
-import { chekAuthPublic } from '~lib/auth';
+import { withOutAuth } from '~lib/auth/withOutAuth';
 
 const VALID_PASSWORD = 'test123';
 const ERRRO_MESSAGE = 'Failed to login with Email And Password';
@@ -136,10 +136,15 @@ const LoginPage: NextPage = ({
 	);
 };
 
-export const getServerSideProps: GetServerSideProps<any> = ({ req }): any =>
-	chekAuthPublic({
-		req,
-		path: '/',
-	});
+export const getServerSideProps: GetServerSideProps<any> = withOutAuth(
+	({ cookieIsAuthToken }) => {
+		return {
+			props: {
+				isToken: cookieIsAuthToken,
+			},
+		};
+	},
+	'/'
+);
 
 export default LoginPage;
