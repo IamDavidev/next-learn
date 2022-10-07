@@ -10,6 +10,7 @@ import { Controller, useForm } from 'react-hook-form';
 
 import ErrroMessage from '~components/ErrroMessage';
 import { AuthContext } from '~lib/context';
+import { useRouter } from 'next/router';
 
 const VALID_PASSWORD = 'test123';
 const ERRRO_MESSAGE = 'Failed to login with Email And Password';
@@ -18,22 +19,17 @@ interface InputsUseForm {
 	email: string;
 	password: string;
 }
-interface DataServerSide {
-	name: string;
-	password: string;
-}
 
 const LoginPage: NextPage = ({
 	data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>): JSX.Element => {
 	console.info('🚀 ~>  file: login.tsx ~>  line 24 ~>  data', data);
+	const router = useRouter();
+	const { setAuth } = useContext(AuthContext);
 
 	const { handleSubmit, control } = useForm<InputsUseForm>();
-
 	const [error, setError]: [boolean, Dispatch<SetStateAction<boolean>>] =
 		useState(false);
-
-	const { setAuth } = useContext(AuthContext);
 
 	const onSubmit = handleSubmit(async (data: InputsUseForm): Promise<void> => {
 		const { password, email } = data;
@@ -60,7 +56,12 @@ const LoginPage: NextPage = ({
 				console.log(data);
 				localStorage.setItem('isAuth', JSON.stringify(true));
 				setAuth(true);
+			})
+			.catch(err => {
+				console.error(err);
 			});
+
+		await router.push('/profile');
 	});
 
 	return (
@@ -107,7 +108,6 @@ const LoginPage: NextPage = ({
 								id='password_form'
 								css={{ my: '4rem' }}
 								type='password'
-								// {...register(FORM_NAMES.PASSWORD)}
 								clearable
 								bordered
 								labelPlaceholder='password'
@@ -139,7 +139,7 @@ export const getServerSideProps: GetServerSideProps<any> = ({ req }): any => {
 
 	const tokenCookies = cookies.AUTH_TOKEN;
 
-	if (tokenCookies) {
+	if (tokenCookies !== undefined) {
 		return {
 			redirect: {
 				destination: '/',

@@ -5,17 +5,12 @@ import { NextUIProvider } from '@nextui-org/react';
 import { theme } from '@/contstans';
 import { AuthContextProvider } from '~lib/context';
 
-function MyApp({ Component, pageProps }: AppProps): JSX.Element {
-	console.log('render My app ');
-
-	console.info(
-		'🚀 ~>  file: _app.tsx ~>  line 9 ~>  MyApp ~>  pageProps',
-		pageProps
-	);
+function MyApp({ Component, pageProps }: AppProps<any>): JSX.Element {
+	const isToken = Boolean(pageProps.isToken);
 
 	return (
 		<NextUIProvider theme={theme}>
-			<AuthContextProvider>
+			<AuthContextProvider isToken={isToken}>
 				<Component {...pageProps} />
 			</AuthContextProvider>
 		</NextUIProvider>

@@ -5,13 +5,15 @@ export const AuthContext: Context<any> = createContext(false);
 
 interface PropsAuthContextProvider {
 	children: ReactNode;
+	isToken: boolean;
 }
 
 export const AuthContextProvider: FC<PropsAuthContextProvider> = ({
 	children,
+	isToken,
 }): JSX.Element => {
 	const [auth, setAuth]: [boolean, Dispatch<SetStateAction<boolean>>] =
-		useState<boolean>(false);
+		useState<boolean>(isToken);
 
 	return (
 		<>
