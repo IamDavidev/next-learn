@@ -3,13 +3,12 @@ import type {
 	InferGetServerSidePropsType,
 	NextPage,
 } from 'next';
-import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import { Button, Container, Input } from '@nextui-org/react';
 import { Controller, useForm } from 'react-hook-form';
 
 import ErrroMessage from '~components/ErrroMessage';
-import { AuthContext } from '~lib/context';
 import { useRouter } from 'next/router';
 import { withOutAuth } from '~lib/auth/withOutAuth';
 
@@ -26,7 +25,6 @@ const LoginPage: NextPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>): JSX.Element => {
 	console.info('🚀 ~>  file: login.tsx ~>  line 24 ~>  data', data);
 	const router = useRouter();
-	const { setAuth } = useContext(AuthContext);
 
 	const { handleSubmit, control } = useForm<InputsUseForm>();
 	const [error, setError]: [boolean, Dispatch<SetStateAction<boolean>>] =
@@ -57,7 +55,6 @@ const LoginPage: NextPage = ({
 				.then(data => {
 					console.log(data);
 					localStorage.setItem('isAuth', JSON.stringify(true));
-					setAuth(true);
 				});
 
 			await router.push('/profile');
@@ -144,7 +141,7 @@ export const getServerSideProps: GetServerSideProps<any> = withOutAuth(
 			},
 		};
 	},
-	'/'
+	'/profile'
 );
 
 export default LoginPage;

@@ -1,9 +1,3 @@
-// IncomingMessage & {
-//     cookies: Partial<{
-//         [key: string]: string;
-//     }>;
-// }
-
 import type { IncomingMessage } from 'http';
 
 interface PropsCheckAuth {
@@ -13,9 +7,10 @@ interface PropsCheckAuth {
 		}>;
 	};
 	path: string;
+	props: object;
 }
 
-export function chekAuthPublic({ req, path }: PropsCheckAuth): any {
+export function chekAuthPublic({ req, path, props }: PropsCheckAuth): any {
 	const { cookies } = req;
 
 	const tokenCookies = cookies.AUTH_TOKEN;
@@ -30,7 +25,7 @@ export function chekAuthPublic({ req, path }: PropsCheckAuth): any {
 	}
 
 	return {
-		props: {},
+		props,
 	};
 }
 

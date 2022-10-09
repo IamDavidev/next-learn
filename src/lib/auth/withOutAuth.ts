@@ -1,4 +1,4 @@
-import { IncomingMessage } from 'http';
+import type { IncomingMessage } from 'http';
 
 interface callFnProps {
 	req?: IncomingMessage & {
@@ -15,6 +15,15 @@ interface returnCallFn {
 	};
 }
 
+type reutrnWithOutAuth =
+	| returnCallFn
+	| {
+			redirect: {
+				destination: string;
+				permanent: boolean;
+			};
+	  };
+
 export function withOutAuth(
 	callBackFn: (
 		props: callFnProps & {
@@ -23,7 +32,7 @@ export function withOutAuth(
 	) => returnCallFn,
 	path: string
 ): any {
-	return ({ req, ...args }: any) => {
+	return ({ req, ...args }: any): reutrnWithOutAuth => {
 		const { cookies } = req;
 
 		const cookieIsAuthToken = cookies.AUTH_TOKEN;
@@ -36,6 +45,7 @@ export function withOutAuth(
 				},
 			};
 		}
+
 		return callBackFn({ req, ...args, cookieIsAuthToken });
 	};
 }
