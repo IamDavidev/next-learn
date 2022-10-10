@@ -27,6 +27,10 @@ export function withAuth(
 		const { cookies } = req;
 
 		const cookieIsAuthToken = cookies.AUTH_TOKEN;
+		console.info(
+			'🚀 ~>  file: withAuth.ts ~>  line 30 ~>  return ~>  cookieIsAuthToken',
+			cookieIsAuthToken
+		);
 
 		if (cookieIsAuthToken === undefined) {
 			return {

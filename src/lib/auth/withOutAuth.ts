@@ -34,8 +34,21 @@ export function withOutAuth(
 ): any {
 	return ({ req, ...args }: any): reutrnWithOutAuth => {
 		const { cookies } = req;
+		console.info(
+			'🚀 ~>  file: withOutAuth.ts ~>  line 37 ~>  return ~>  req',
+			req
+		);
+		console.info(
+			'🚀 ~>  file: withOutAuth.ts ~>  line 37 ~>  return ~>  cookies',
+			cookies
+		);
 
 		const cookieIsAuthToken = cookies.AUTH_TOKEN;
+
+		console.info(
+			'🚀 ~>  file: withOutAuth.ts ~>  line 39 ~>  return ~>  cookieIsAuthToken',
+			cookieIsAuthToken
+		);
 
 		if (cookieIsAuthToken !== undefined) {
 			return {

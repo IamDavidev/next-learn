@@ -1,5 +1,6 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import { useContext } from 'react';
+import ButtonLogout from '~components/ButtonLogout';
 
 import { withAuth } from '~lib/auth/withAuth';
 import { AuthContext } from '~lib/context';
@@ -11,6 +12,7 @@ const AuthPage: NextPage = (): JSX.Element => {
 	return (
 		<>
 			<div className='profilePage'>Your are Login </div>
+			<ButtonLogout />
 			<style jsx>{`
 				.profilePage {
 					padding: 1rem;
@@ -22,8 +24,13 @@ const AuthPage: NextPage = (): JSX.Element => {
 
 export default AuthPage;
 
-export const getServerSideProps: GetServerSideProps = withAuth(() => {
-	return {
-		props: {},
-	};
-}, '/login');
+export const getServerSideProps: GetServerSideProps = withAuth(
+	({ cookieIsAuthToken }) => {
+		return {
+			props: {
+				isToken: cookieIsAuthToken,
+			},
+		};
+	},
+	'/login'
+);

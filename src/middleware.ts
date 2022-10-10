@@ -4,5 +4,5 @@
  *
  */
 export default function middleware(req: any): void {
-	console.log('Middleware', req.cookies);
+	// console.log('Middleware', req.cookies);
 }

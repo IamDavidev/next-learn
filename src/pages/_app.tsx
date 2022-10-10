@@ -6,7 +6,7 @@ import { theme } from '@/contstans';
 import { AuthContextProvider } from '~lib/context';
 
 function MyApp({ Component, pageProps }: AppProps<any>): JSX.Element {
-	const isToken = Boolean(pageProps.isToken);
+	const isToken = Boolean(pageProps?.isToken);
 
 	return (
 		<NextUIProvider theme={theme}>

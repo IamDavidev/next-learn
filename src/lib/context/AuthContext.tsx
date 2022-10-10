@@ -81,9 +81,11 @@ export const AuthContextProvider: FC<PropsAuthContextProvider> = ({
 	isToken,
 }): JSX.Element => {
 	const { auth, Login, Logout, updateProfile } = useAuth();
+	console.info('🚀 ~>  file: AuthContext.tsx ~>  line 82 ~>  isToken', isToken);
 
 	useEffect((): void => {
 		if (!isToken) return;
+		console.log('isToken', isToken);
 		Login(isToken);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isToken]);
