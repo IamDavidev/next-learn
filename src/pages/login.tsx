@@ -32,6 +32,10 @@ const LoginPage: NextPage = ({
 
 	const onSubmit = handleSubmit(async (data: InputsUseForm): Promise<void> => {
 		const { password, email } = data;
+		console.info(
+			'🚀 ~>  file: login.tsx ~>  line 35 ~>  onSubmit ~>  password',
+			password
+		);
 
 		if (password !== VALID_PASSWORD) {
 			console.error('Invalid Data');
@@ -39,6 +43,7 @@ const LoginPage: NextPage = ({
 			setTimeout((): void => {
 				setError(false);
 			}, 3000);
+			return;
 		}
 
 		const dataUser = {
@@ -137,7 +142,7 @@ export const getServerSideProps: GetServerSideProps<any> = withOutAuth(
 	({ cookieIsAuthToken }) => {
 		return {
 			props: {
-				isToken: cookieIsAuthToken,
+				// isToken: cookieIsAuthToken,
 			},
 		};
 	},

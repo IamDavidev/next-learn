@@ -7,11 +7,12 @@ interface ISetCookieAuth {
 	res: NextApiResponse;
 }
 
-const COOKIE_AUTH: string = 'AUTH_TOKEN';
-const DEFAULT_VALUE_COOKIE_EXAMPLE: string = 'true';
+export const COOKIE_AUTH: string = 'AUTH_TOKEN';
+export const DEFAULT_VALUE_COOKIE_EXAMPLE: string = 'true';
 
-const SET_HEADER_TYPE: {
-	[key: string]: string;
+export const SET_HEADER_TYPE: {
+	// [key: string]: string;
+	_SET_COOKIE: string;
 } = {
 	_SET_COOKIE: 'Set-Cookie',
 };

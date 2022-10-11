@@ -1,10 +1,26 @@
 import type { FC } from 'react';
 import { Button } from '@nextui-org/react';
+import { METHODS_TYPE } from '~pages/api/login';
+import { type NextRouter, useRouter } from 'next/router';
+
+export async function Logout(router: NextRouter): Promise<void> {
+	await fetch('/api/logout', {
+		method: METHODS_TYPE._POST,
+	})
+		.then(res => {
+			res.ok && router.push('/');
+		})
+		.catch(err => {
+			console.error(err);
+			throw new Error(err);
+		});
+}
 
 const ButtonLogout: FC<any> = (): JSX.Element => {
+	const router: NextRouter = useRouter();
 	return (
 		<>
-			<Button>
+			<Button onClick={async (): Promise<void> => await Logout(router)}>
 				Logout
 				<svg
 					xmlns='http://www.w3.org/2000/svg'

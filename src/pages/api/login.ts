@@ -6,12 +6,19 @@ import { generateExpireCookie } from '~lib/utils';
 const COOKIE_AUTH = 'AUTH_TOKEN';
 const DEFAULT_VALUE_COOKIE_EXAMPLE = 'true';
 
+export const METHODS_TYPE = {
+	_GET: 'GET',
+	_POST: 'POST',
+	_PUT: 'PUT',
+	_DELETE: 'DELETE',
+};
+
 export default function LoginController(
 	req: NextApiRequest,
 	res: NextApiResponse
 ): void {
 	const { method, body } = req;
-	if (method !== 'POST')
+	if (method !== METHODS_TYPE._POST)
 		return res.status(405).json({
 			error: 'Error: Method  no Valid',
 		});
