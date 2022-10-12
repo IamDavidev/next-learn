@@ -24,15 +24,15 @@ export default function LoginController(
 		});
 
 	const {
-		email,
+		username,
 		password,
 		...rest
 	}: {
-		email: string;
+		username: string;
 		password: string;
 	} = JSON.parse(body);
 
-	if (email === undefined || password === undefined)
+	if (username === undefined || password === undefined)
 		return res.status(400).send({
 			error: 'missing Fields requireds',
 		});
@@ -51,7 +51,7 @@ export default function LoginController(
 	);
 
 	res.status(200).json({
-		email,
-		password,
+		username,
+		jwt: DEFAULT_VALUE_COOKIE_EXAMPLE,
 	});
 }

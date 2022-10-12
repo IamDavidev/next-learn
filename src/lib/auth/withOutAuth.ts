@@ -1,6 +1,7 @@
 import type {
 	callFnProps,
 	IPropsWithOutAuthHOF,
+	IReturnWithOutAuth,
 	returnCallFn,
 } from '~interfaces/auth.types';
 import { DEFAULT_VALUE_COOKIE_EXAMPLE } from '~lib/utils/setCookie';
@@ -8,17 +9,9 @@ import { DEFAULT_VALUE_COOKIE_EXAMPLE } from '~lib/utils/setCookie';
 export function withOutAuth(
 	callBackFn: (props: callFnProps) => returnCallFn,
 	path: string
-): any {
-	return ({ req, res }: IPropsWithOutAuthHOF): any => {
+): ({ req, res }: IPropsWithOutAuthHOF) => IReturnWithOutAuth {
+	return ({ req, res }: IPropsWithOutAuthHOF): IReturnWithOutAuth => {
 		const { cookies } = req;
-		console.info(
-			'🚀 ~>  file: withOutAuth.ts ~>  line 37 ~>  return ~>  req',
-			req
-		);
-		console.info(
-			'🚀 ~>  file: withOutAuth.ts ~>  line 37 ~>  return ~>  cookies',
-			cookies
-		);
 
 		const cookieAuthToken = cookies.AUTH_TOKEN;
 

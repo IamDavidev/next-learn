@@ -21,11 +21,15 @@ export default function useAuth(): useAuthContext {
 		Dispatch<SetStateAction<emptyStateUser>>
 	] = useState<emptyStateUser>(EMPTY_STATE_USER);
 
-	const Login = (Jwt: string): void =>
+	const Login = (Jwt: string, name: string): void =>
 		setAuth(prevAuth => ({
 			...prevAuth,
 			isToken: true,
 			jwt: Jwt,
+			user: {
+				...prevAuth.user,
+				name,
+			},
 		}));
 
 	const Logout = (): void => setAuth(EMPTY_STATE_USER);

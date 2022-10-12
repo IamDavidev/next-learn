@@ -15,6 +15,7 @@ export interface callFnProps {
 
 export interface returnCallFn {
 	props: {
+		isAuth?: boolean;
 		[key: string]: any;
 	};
 }
@@ -38,17 +39,20 @@ type reutrnAuthHOF =
 
 export type IReturnWithAuth = reutrnAuthHOF;
 export type IReturnWithOutAuth = reutrnAuthHOF;
+export type IReturnWithStandard = reutrnAuthHOF;
+
 export type IPropsWithAuthHOF = IPropsAuthHOF;
 export type IPropsWithOutAuthHOF = IPropsAuthHOF;
+export type IPropsWithStandardHOF = IPropsAuthHOF;
 
 export interface PropsAuthContextProvider {
 	children: ReactNode;
-	JWToken: string;
+	JWToken?: string;
 }
 
 export interface useAuthContext {
 	auth: emptyStateUser;
-	Login: (Jwt: string) => void;
+	Login: (Jwt: string, name: string) => void;
 	Logout: () => void;
 	updateProfile: (data: any) => void;
 }

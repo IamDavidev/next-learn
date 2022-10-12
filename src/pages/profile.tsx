@@ -1,3 +1,4 @@
+import { PageLayout } from '@/layouts';
 import type { NextPage } from 'next';
 import { useContext } from 'react';
 
@@ -10,7 +11,7 @@ const AuthPage: NextPage = (): JSX.Element => {
 	console.info('🚀 ~>  file: profile.tsx ~>  line 9 ~>  auth', auth);
 
 	return (
-		<>
+		<PageLayout title='profile page' description='profile auth next'>
 			<div className='profilePage'>Your are Login </div>
 			<ButtonLogout />
 			<style jsx>{`
@@ -18,7 +19,7 @@ const AuthPage: NextPage = (): JSX.Element => {
 					padding: 1rem;
 				}
 			`}</style>
-		</>
+		</PageLayout>
 	);
 };
 

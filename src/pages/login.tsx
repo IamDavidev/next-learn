@@ -7,40 +7,43 @@ import { Controller, useForm } from 'react-hook-form';
 import ErrroMessage from '~components/ErrroMessage';
 import { useRouter } from 'next/router';
 import { withOutAuth } from '~lib/auth/withOutAuth';
+import { useAuth } from '~lib/hooks';
 
-const VALID_PASSWORD = 'test123';
-const ERRRO_MESSAGE = 'Failed to login with Email And Password';
+const VALID_CREDENTIALS = {
+	_PASSWORD: 'test',
+	_USERNAME: 'davidev',
+};
+const ERROR_MESSAGE = 'Failed to login with Email And Password';
 
 interface InputsUseForm {
-	email: string;
+	username: string;
 	password: string;
+}
+
+function invalidData(setError: any): void {
+	console.error('Invalid Data');
+	setError(true);
+	setTimeout((): void => {
+		setError(false);
+	}, 3000);
 }
 
 const LoginPage: NextPage = (): JSX.Element => {
 	const router = useRouter();
+	const { Login } = useAuth();
 
 	const { handleSubmit, control } = useForm<InputsUseForm>();
 	const [error, setError]: [boolean, Dispatch<SetStateAction<boolean>>] =
 		useState(false);
 
 	const onSubmit = handleSubmit(async (data: InputsUseForm): Promise<void> => {
-		const { password, email } = data;
-		console.info(
-			'🚀 ~>  file: login.tsx ~>  line 35 ~>  onSubmit ~>  password',
-			password
-		);
+		const { password, username } = data;
 
-		if (password !== VALID_PASSWORD) {
-			console.error('Invalid Data');
-			setError(true);
-			setTimeout((): void => {
-				setError(false);
-			}, 3000);
-			return;
-		}
+		if (password !== VALID_CREDENTIALS._PASSWORD) return invalidData(setError);
+		if (username !== VALID_CREDENTIALS._USERNAME) return invalidData(setError);
 
 		const dataUser = {
-			email,
+			username,
 			password,
 		};
 
@@ -51,14 +54,15 @@ const LoginPage: NextPage = (): JSX.Element => {
 			})
 				.then(async res => await res.json())
 				.then(data => {
-					console.log(data);
-					localStorage.setItem('isAuth', JSON.stringify(true));
+					const { jwt, username } = data;
+
+					Login(jwt, username);
 				});
 
 			await router.push('/profile');
 		} catch (err) {
 			console.error('Error', err);
-			throw new Error("Errro : Can't Login");
+			throw new Error("Error : Can't Login");
 		}
 	});
 
@@ -80,7 +84,7 @@ const LoginPage: NextPage = (): JSX.Element => {
 						flexDirection: 'column',
 					}}>
 					<Controller
-						name='email'
+						name='username'
 						control={control}
 						defaultValue='...'
 						render={({ field }): JSX.Element => (
@@ -126,16 +130,14 @@ const LoginPage: NextPage = (): JSX.Element => {
 					</Button>
 				</Container>
 			</form>
-			<Container>{error && <ErrroMessage msg={ERRRO_MESSAGE} />}</Container>
+			<Container>{error && <ErrroMessage msg={ERROR_MESSAGE} />}</Container>
 		</Container>
 	);
 };
 
-export const getServerSideProps = withOutAuth(({ cookieAuthToken }) => {
+export const getServerSideProps = withOutAuth(() => {
 	return {
-		props: {
-			// isToken: cookieIsAuthToken,
-		},
+		props: {},
 	};
 }, '/profile');
 
