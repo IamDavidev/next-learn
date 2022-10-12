@@ -8,7 +8,7 @@ interface ISetCookieAuth {
 }
 
 export const COOKIE_AUTH: string = 'AUTH_TOKEN';
-export const DEFAULT_VALUE_COOKIE_EXAMPLE: string = 'true';
+export const DEFAULT_VALUE_COOKIE_EXAMPLE: string = 'jwt-token-example-123';
 
 export const SET_HEADER_TYPE: {
 	// [key: string]: string;

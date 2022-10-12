@@ -1,8 +1,4 @@
-import type {
-	GetServerSideProps,
-	InferGetServerSidePropsType,
-	NextPage,
-} from 'next';
+import type { NextPage } from 'next';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import { Button, Container, Input } from '@nextui-org/react';
@@ -20,10 +16,7 @@ interface InputsUseForm {
 	password: string;
 }
 
-const LoginPage: NextPage = ({
-	data,
-}: InferGetServerSidePropsType<typeof getServerSideProps>): JSX.Element => {
-	console.info('🚀 ~>  file: login.tsx ~>  line 24 ~>  data', data);
+const LoginPage: NextPage = (): JSX.Element => {
 	const router = useRouter();
 
 	const { handleSubmit, control } = useForm<InputsUseForm>();
@@ -138,15 +131,12 @@ const LoginPage: NextPage = ({
 	);
 };
 
-export const getServerSideProps: GetServerSideProps<any> = withOutAuth(
-	({ cookieIsAuthToken }) => {
-		return {
-			props: {
-				// isToken: cookieIsAuthToken,
-			},
-		};
-	},
-	'/profile'
-);
+export const getServerSideProps = withOutAuth(({ cookieAuthToken }) => {
+	return {
+		props: {
+			// isToken: cookieIsAuthToken,
+		},
+	};
+}, '/profile');
 
 export default LoginPage;

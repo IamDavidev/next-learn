@@ -6,11 +6,15 @@ import { theme } from '@/contstans';
 import { AuthContextProvider } from '~lib/context';
 
 function MyApp({ Component, pageProps }: AppProps<any>): JSX.Element {
-	const isToken = Boolean(pageProps?.isToken);
+	console.info(
+		'🚀 ~>  file: _app.tsx ~>  line 9 ~>  MyApp ~>  pageProps',
+		pageProps
+	);
+	const JWToken = pageProps?.Token;
 
 	return (
 		<NextUIProvider theme={theme}>
-			<AuthContextProvider isToken={isToken}>
+			<AuthContextProvider JWToken={JWToken}>
 				<Component {...pageProps} />
 			</AuthContextProvider>
 		</NextUIProvider>

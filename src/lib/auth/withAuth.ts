@@ -1,38 +1,28 @@
-import { IncomingMessage } from 'http';
-
-interface callFnProps {
-	req?: IncomingMessage & {
-		cookies: Partial<{
-			[key: string]: string;
-		}>;
-	};
-	path: string;
-}
-
-interface returnCallFn {
-	props: {
-		[key: string]: any;
-	};
-}
+import {
+	callFnProps,
+	IPropsWithAuthHOF,
+	IReturnWithAuth,
+	returnCallFn,
+} from '~interfaces/auth.types';
+import { removeCookie } from '~lib/utils/removeCookie';
+import { DEFAULT_VALUE_COOKIE_EXAMPLE } from '~lib/utils/setCookie';
 
 export function withAuth(
-	callBackFn: (
-		props: callFnProps & {
-			cookieIsAuthToken?: string;
-		}
-	) => returnCallFn,
+	callBackFn: (props: callFnProps) => returnCallFn,
 	path: string
-): any {
-	return ({ req, ...args }: any) => {
+): ({ req, res }: IPropsWithAuthHOF) => IReturnWithAuth {
+	return ({ req, res }: IPropsWithAuthHOF): IReturnWithAuth => {
 		const { cookies } = req;
 
-		const cookieIsAuthToken = cookies.AUTH_TOKEN;
-		console.info(
-			'🚀 ~>  file: withAuth.ts ~>  line 30 ~>  return ~>  cookieIsAuthToken',
-			cookieIsAuthToken
-		);
+		const cookieAuthToken = cookies.AUTH_TOKEN;
 
-		if (cookieIsAuthToken === undefined) {
+		// find and check if the cookie exist in the backend and if it is valid
+		// demo: NOT IMPLEMENTED
+
+		if (cookieAuthToken !== DEFAULT_VALUE_COOKIE_EXAMPLE) {
+			removeCookie({
+				res,
+			});
 			return {
 				redirect: {
 					destination: path,
@@ -40,6 +30,6 @@ export function withAuth(
 				},
 			};
 		}
-		return callBackFn({ req, ...args, cookieIsAuthToken });
+		return callBackFn({ req, res, cookieAuthToken });
 	};
 }

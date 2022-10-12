@@ -3,8 +3,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { serialize } from 'cookie';
 import { generateExpireCookie } from '~lib/utils';
 
-const COOKIE_AUTH = 'AUTH_TOKEN';
-const DEFAULT_VALUE_COOKIE_EXAMPLE = 'true';
+export const COOKIE_AUTH: string = 'AUTH_TOKEN';
+export const DEFAULT_VALUE_COOKIE_EXAMPLE: string = 'jwt-token-example-123';
 
 export const METHODS_TYPE = {
 	_GET: 'GET',

@@ -1,38 +1,15 @@
-import type { IncomingMessage } from 'http';
-
-interface callFnProps {
-	req?: IncomingMessage & {
-		cookies: Partial<{
-			[key: string]: string;
-		}>;
-	};
-	path: string;
-}
-
-interface returnCallFn {
-	props: {
-		[key: string]: any;
-	};
-}
-
-type reutrnWithOutAuth =
-	| returnCallFn
-	| {
-			redirect: {
-				destination: string;
-				permanent: boolean;
-			};
-	  };
+import type {
+	callFnProps,
+	IPropsWithOutAuthHOF,
+	returnCallFn,
+} from '~interfaces/auth.types';
+import { DEFAULT_VALUE_COOKIE_EXAMPLE } from '~lib/utils/setCookie';
 
 export function withOutAuth(
-	callBackFn: (
-		props: callFnProps & {
-			cookieIsAuthToken?: string;
-		}
-	) => returnCallFn,
+	callBackFn: (props: callFnProps) => returnCallFn,
 	path: string
 ): any {
-	return ({ req, ...args }: any): reutrnWithOutAuth => {
+	return ({ req, res }: IPropsWithOutAuthHOF): any => {
 		const { cookies } = req;
 		console.info(
 			'🚀 ~>  file: withOutAuth.ts ~>  line 37 ~>  return ~>  req',
@@ -43,14 +20,14 @@ export function withOutAuth(
 			cookies
 		);
 
-		const cookieIsAuthToken = cookies.AUTH_TOKEN;
+		const cookieAuthToken = cookies.AUTH_TOKEN;
 
 		console.info(
-			'🚀 ~>  file: withOutAuth.ts ~>  line 39 ~>  return ~>  cookieIsAuthToken',
-			cookieIsAuthToken
+			'🚀 ~>  file: withOutAuth.ts ~>  line 39 ~>  return ~>  cookieAuthToken',
+			cookieAuthToken
 		);
 
-		if (cookieIsAuthToken !== undefined) {
+		if (cookieAuthToken === DEFAULT_VALUE_COOKIE_EXAMPLE) {
 			return {
 				redirect: {
 					destination: path,
@@ -59,6 +36,6 @@ export function withOutAuth(
 			};
 		}
 
-		return callBackFn({ req, ...args, cookieIsAuthToken });
+		return callBackFn({ req, res, cookieAuthToken });
 	};
 }
