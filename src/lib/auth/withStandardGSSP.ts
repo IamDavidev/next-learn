@@ -7,14 +7,14 @@ import {
 import { removeCookie } from '~lib/utils/removeCookie';
 import { DEFAULT_VALUE_COOKIE_EXAMPLE } from '~lib/utils/setCookie';
 
-export function withStandard(
-	callbackFN: (props: callFnProps) => returnCallFn
+export function withStandardGSSP(
+	callbackFN?: (props: callFnProps) => returnCallFn
 ): ({ req, res }: IPropsWithStandardHOF) => IReturnWithStandard {
 	return ({ req, res }: IPropsWithStandardHOF): IReturnWithStandard => {
 		const { cookies } = req;
 
 		const cookieAuthToken = cookies.AUTH_TOKEN;
-        
+
 		if (cookieAuthToken !== DEFAULT_VALUE_COOKIE_EXAMPLE) {
 			removeCookie({
 				res,
@@ -26,6 +26,13 @@ export function withStandard(
 				},
 			};
 		}
-		return callbackFN({ req, res, cookieAuthToken });
+		return callbackFN !== undefined
+			? callbackFN({ req, res, cookieAuthToken })
+			: {
+					props: {
+						token: cookieAuthToken,
+						isAuth: true,
+					},
+			  };
 	};
 }

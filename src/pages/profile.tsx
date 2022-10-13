@@ -4,7 +4,7 @@ import type { NextPage } from 'next';
 import { useContext } from 'react';
 
 import ButtonLogout from '~components/ButtonLogout';
-import { withAuth } from '~lib/auth/withAuth';
+import { withAuthGSSP } from '~lib/auth/withAuthGSSP';
 import { AuthContext } from '~lib/context';
 
 const AuthPage: NextPage = (): JSX.Element => {
@@ -32,10 +32,10 @@ const AuthPage: NextPage = (): JSX.Element => {
 
 export default AuthPage;
 
-export const getServerSideProps = withAuth(({ cookieAuthToken }) => {
+export const getServerSideProps = withAuthGSSP(({ cookieAuthToken }) => {
 	return {
 		props: {
 			Token: cookieAuthToken,
 		},
 	};
-}, '/login');
+});

@@ -4,32 +4,30 @@ import Link from 'next/link';
 import { Container } from '@nextui-org/react';
 
 import { PageLayout } from '@/layouts';
-import { withStandard } from '~lib/auth/withStandard';
+import { withStandardGSSP } from '~lib/auth/withStandardGSSP';
 
 const Home: NextPage = (data: any): JSX.Element => {
-	console.info('🚀 ~>  file: index.tsx ~>  line 10 ~>  data', data);
 	return (
 		<>
 			<PageLayout title={'Learn Next'} description={'Learn Next With '}>
 				<Container css={{ padding: '3rem' }}>
-					<>
-						<Link href={'/profile'}>Go to Profile</Link>
-					</>
-					<br />
-					<>
-						<Link href={'/login'}>Go to Login</Link>
-					</>
+					<div></div>
+					{data.isAuth === true ? (
+						<>
+							<Link href={'/profile'}>Go to Profile</Link>
+						</>
+					) : (
+						<>
+							<Link href={'/login'}>Go to Login</Link>
+						</>
+					)}
 				</Container>
 			</PageLayout>
 		</>
 	);
 };
 
-export const getServerSideProps = withStandard(({ cookieAuthToken }) => {
-	console.info(
-		'🚀 ~>  file: index.tsx ~>  line 28 ~>  getServerSideProps ~>  cookieAuthToken',
-		cookieAuthToken
-	);
+export const getServerSideProps = withStandardGSSP(({ cookieAuthToken }) => {
 	return {
 		props: {
 			isAuth: true,

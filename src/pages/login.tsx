@@ -1,13 +1,13 @@
 import type { NextPage } from 'next';
-import { Dispatch, SetStateAction, useState } from 'react';
 
+import { Dispatch, SetStateAction, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Button, Container, Input } from '@nextui-org/react';
 import { Controller, useForm } from 'react-hook-form';
 
 import ErrroMessage from '~components/ErrroMessage';
-import { useRouter } from 'next/router';
-import { withOutAuth } from '~lib/auth/withOutAuth';
 import { useAuth } from '~lib/hooks';
+import { withOutAuthGSSP } from '~lib/auth/withOutAuthGSSP';
 
 const VALID_CREDENTIALS = {
 	_PASSWORD: 'test',
@@ -135,10 +135,6 @@ const LoginPage: NextPage = (): JSX.Element => {
 	);
 };
 
-export const getServerSideProps = withOutAuth(() => {
-	return {
-		props: {},
-	};
-}, '/profile');
+export const getServerSideProps = withOutAuthGSSP();
 
 export default LoginPage;

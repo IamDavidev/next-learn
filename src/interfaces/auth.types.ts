@@ -15,8 +15,8 @@ export interface callFnProps {
 
 export interface returnCallFn {
 	props: {
-		isAuth?: boolean;
 		[key: string]: any;
+		token?: string;
 	};
 }
 export interface IPropsAuthHOF {

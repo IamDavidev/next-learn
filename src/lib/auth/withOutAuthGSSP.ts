@@ -6,9 +6,8 @@ import type {
 } from '~interfaces/auth.types';
 import { DEFAULT_VALUE_COOKIE_EXAMPLE } from '~lib/utils/setCookie';
 
-export function withOutAuth(
-	callBackFn: (props: callFnProps) => returnCallFn,
-	path: string
+export function withOutAuthGSSP(
+	callBackFn?: (props: callFnProps) => returnCallFn
 ): ({ req, res }: IPropsWithOutAuthHOF) => IReturnWithOutAuth {
 	return ({ req, res }: IPropsWithOutAuthHOF): IReturnWithOutAuth => {
 		const { cookies } = req;
@@ -18,12 +17,16 @@ export function withOutAuth(
 		if (cookieAuthToken === DEFAULT_VALUE_COOKIE_EXAMPLE) {
 			return {
 				redirect: {
-					destination: path,
+					destination: '/profile',
 					permanent: false,
 				},
 			};
 		}
 
-		return callBackFn({ req, res, cookieAuthToken });
+		return callBackFn !== undefined
+			? callBackFn({ req, res, cookieAuthToken })
+			: {
+					props: {},
+			  };
 	};
 }
