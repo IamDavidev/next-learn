@@ -14,11 +14,7 @@ export function withStandard(
 		const { cookies } = req;
 
 		const cookieAuthToken = cookies.AUTH_TOKEN;
-		console.info(
-			'🚀 ~>  file: withStandard.ts ~>  line 17 ~>  return ~>  cookieAuthToken',
-			cookieAuthToken
-		);
-
+        
 		if (cookieAuthToken !== DEFAULT_VALUE_COOKIE_EXAMPLE) {
 			removeCookie({
 				res,

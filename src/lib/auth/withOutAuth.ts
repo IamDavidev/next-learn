@@ -15,11 +15,6 @@ export function withOutAuth(
 
 		const cookieAuthToken = cookies.AUTH_TOKEN;
 
-		console.info(
-			'🚀 ~>  file: withOutAuth.ts ~>  line 39 ~>  return ~>  cookieAuthToken',
-			cookieAuthToken
-		);
-
 		if (cookieAuthToken === DEFAULT_VALUE_COOKIE_EXAMPLE) {
 			return {
 				redirect: {

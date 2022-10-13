@@ -1,4 +1,5 @@
 import { PageLayout } from '@/layouts';
+import { Container, Text } from '@nextui-org/react';
 import type { NextPage } from 'next';
 import { useContext } from 'react';
 
@@ -8,17 +9,23 @@ import { AuthContext } from '~lib/context';
 
 const AuthPage: NextPage = (): JSX.Element => {
 	const { auth } = useContext(AuthContext);
-	console.info('🚀 ~>  file: profile.tsx ~>  line 9 ~>  auth', auth);
 
 	return (
 		<PageLayout title='profile page' description='profile auth next'>
-			<div className='profilePage'>Your are Login </div>
-			<ButtonLogout />
-			<style jsx>{`
-				.profilePage {
-					padding: 1rem;
-				}
-			`}</style>
+			<Container
+				css={{
+					d: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+					w: '100%',
+					minHeight: '100vh',
+					gap: '$10',
+					flexDirection: 'column',
+				}}>
+				<div>Your are Login </div>
+				<Text>TOKEN : {auth.jwt}</Text>
+				<ButtonLogout />
+			</Container>
 		</PageLayout>
 	);
 };
