@@ -11,7 +11,6 @@ export function withOutAuthGSSP(
 ): ({ req, res }: IPropsWithOutAuthHOF) => IReturnWithOutAuth {
 	return ({ req, res }: IPropsWithOutAuthHOF): IReturnWithOutAuth => {
 		const { cookies } = req;
-
 		const cookieAuthToken = cookies.AUTH_TOKEN;
 
 		if (cookieAuthToken === DEFAULT_VALUE_COOKIE_EXAMPLE) {

@@ -26,6 +26,7 @@ export interface IPropsAuthHOF {
 		}>;
 	};
 	res: NextApiResponse;
+	resolvedUrl?: string;
 }
 
 type reutrnAuthHOF =

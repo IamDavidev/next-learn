@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { NextPage } from 'next';
 
 import Head from 'next/head';
+import Navbar from './Navbar';
 
 interface PropsPageLayout {
 	title: string;
@@ -20,7 +21,10 @@ export const PageLayout: NextPage<PropsPageLayout> = ({
 				<title>{title}</title>
 				<meta name='description' content={description} />
 			</Head>
-			<main>{children}</main>
+			<main>
+				<Navbar />
+				{children}
+			</main>
 		</>
 	);
 };

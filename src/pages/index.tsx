@@ -27,13 +27,6 @@ const Home: NextPage = (data: any): JSX.Element => {
 	);
 };
 
-export const getServerSideProps = withStandardGSSP(({ cookieAuthToken }) => {
-	return {
-		props: {
-			isAuth: true,
-			token: cookieAuthToken,
-		},
-	};
-});
+export const getServerSideProps = withStandardGSSP();
 
 export default Home;

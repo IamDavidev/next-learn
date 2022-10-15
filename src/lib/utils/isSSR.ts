@@ -1,3 +1,8 @@
-export function isSSr({ url, resolvedUrl }: any): boolean {
-	return url === resolvedUrl;
+import { type NextApiRequest } from 'next';
+
+export function isSSr(
+	req: NextApiRequest,
+	resolvedUrl: string | undefined
+): boolean {
+	return req.url === resolvedUrl;
 }

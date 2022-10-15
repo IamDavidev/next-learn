@@ -18,7 +18,6 @@ const AuthPage: NextPage = (): JSX.Element => {
 					justifyContent: 'center',
 					alignItems: 'center',
 					w: '100%',
-					minHeight: '100vh',
 					gap: '$10',
 					flexDirection: 'column',
 				}}>
