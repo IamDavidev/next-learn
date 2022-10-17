@@ -29,16 +29,16 @@ export interface IPropsAuthHOF {
 	resolvedUrl?: string;
 }
 
-type reutrnAuthHOF =
-	| returnCallFn
-	| {
-			redirect: {
-				destination: string;
-				permanent: boolean;
-			};
-	  };
+export interface returnRedirect {
+	redirect: {
+		destination: string;
+		permanent: boolean;
+	};
+}
 
-export type IReturnWithAuth = reutrnAuthHOF;
+type reutrnAuthHOF = returnCallFn | returnRedirect;
+
+export type IReturnWithAuth = Promise<reutrnAuthHOF>;
 export type IReturnWithOutAuth = reutrnAuthHOF;
 export type IReturnWithStandard = reutrnAuthHOF;
 
@@ -49,11 +49,12 @@ export type IPropsWithStandardHOF = IPropsAuthHOF;
 export interface PropsAuthContextProvider {
 	children: ReactNode;
 	JWToken?: string;
+	image?: string;
 }
 
 export interface useAuthContext {
 	auth: emptyStateUser;
-	Login: (Jwt: string, name: string) => void;
+	Login: (Jwt: string, name: string, image: string | undefined) => void;
 	Logout: () => void;
 	updateProfile: (data: any) => void;
 }

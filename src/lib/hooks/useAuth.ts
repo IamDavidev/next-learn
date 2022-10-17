@@ -21,7 +21,11 @@ export default function useAuth(): useAuthContext {
 		Dispatch<SetStateAction<emptyStateUser>>
 	] = useState<emptyStateUser>(EMPTY_STATE_USER);
 
-	const Login = (Jwt: string, name: string): void =>
+	const Login = (
+		Jwt: string,
+		name: string,
+		profileImage: string | undefined
+	): void =>
 		setAuth(prevAuth => ({
 			...prevAuth,
 			isToken: true,
@@ -29,6 +33,7 @@ export default function useAuth(): useAuthContext {
 			user: {
 				...prevAuth.user,
 				name,
+				avatar: profileImage === undefined ? '' : profileImage,
 			},
 		}));
 

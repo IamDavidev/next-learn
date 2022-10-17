@@ -11,7 +11,7 @@ import { DEFAULT_VALUE_COOKIE_EXAMPLE } from '~lib/utils/setCookie';
 
 export const AuthContext: Context<useAuthContext> = createContext({
 	auth: EMPTY_STATE_USER,
-	Login: (jwt, name) => {},
+	Login: (jwt, name, image) => {},
 	Logout: () => {},
 	updateProfile: data => {},
 });
@@ -19,12 +19,14 @@ export const AuthContext: Context<useAuthContext> = createContext({
 export const AuthContextProvider: FC<PropsAuthContextProvider> = ({
 	children,
 	JWToken,
+	image,
 }): JSX.Element => {
 	const { auth, Login, Logout, updateProfile } = useAuth();
+	console.info('🚀 ~>  file: AuthContext.tsx ~>  line 25 ~>  auth', auth);
 
 	useEffect((): void => {
 		if (JWToken !== DEFAULT_VALUE_COOKIE_EXAMPLE) return;
-		Login(JWToken, 'davidev');
+		Login(JWToken, 'davidev', image);
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [JWToken]);

@@ -9,8 +9,11 @@ import { DEFAULT_VALUE_COOKIE_EXAMPLE } from '~lib/utils/setCookie';
 
 export function withStandardGSSP(
 	callbackFN?: (props: callFnProps) => returnCallFn
-): ({ req, res }: IPropsWithStandardHOF) => IReturnWithStandard {
-	return ({ req, res }: IPropsWithStandardHOF): IReturnWithStandard => {
+): ({ req, res }: IPropsWithStandardHOF) => Promise<IReturnWithStandard> {
+	return async ({
+		req,
+		res,
+	}: IPropsWithStandardHOF): Promise<IReturnWithStandard> => {
 		const { cookies } = req;
 
 		const cookieAuthToken = cookies.AUTH_TOKEN;
@@ -26,12 +29,20 @@ export function withStandardGSSP(
 				},
 			};
 		}
+		const profileImage = await fetch('https://randomuser.me/api/')
+			.then(async res => await res.json())
+			.then(data => {
+				const image = data.results[0].picture.medium;
+				return image;
+			});
+
 		return callbackFN !== undefined
 			? callbackFN({ req, res, cookieAuthToken })
 			: {
 					props: {
 						token: cookieAuthToken,
 						isAuth: true,
+						profileImage,
 					},
 			  };
 	};
