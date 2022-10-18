@@ -6,10 +6,6 @@ import { AuthContextProvider } from '~lib/context';
 import { theme } from '~constants/theme';
 
 function MyApp({ Component, pageProps }: AppProps<any>): JSX.Element {
-	console.info(
-		'🚀 ~>  file: _app.tsx ~>  line 9 ~>  MyApp ~>  pageProps',
-		pageProps
-	);
 	const JWToken = pageProps?.token;
 	const profileImage = pageProps?.profileImage;
 

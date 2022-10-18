@@ -22,7 +22,6 @@ export const AuthContextProvider: FC<PropsAuthContextProvider> = ({
 	image,
 }): JSX.Element => {
 	const { auth, Login, Logout, updateProfile } = useAuth();
-	console.info('🚀 ~>  file: AuthContext.tsx ~>  line 25 ~>  auth', auth);
 
 	useEffect((): void => {
 		if (JWToken !== DEFAULT_VALUE_COOKIE_EXAMPLE) return;
