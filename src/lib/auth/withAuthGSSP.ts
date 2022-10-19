@@ -1,4 +1,4 @@
-import { QueryClient } from 'react-query';
+import { dehydrate, QueryClient } from 'react-query';
 
 import { REDIRECT_WITH_AUTH } from '~constants/redirects';
 import {
@@ -11,12 +11,20 @@ import { removeCookie } from '~lib/utils';
 
 import { DEFAULT_VALUE_COOKIE_EXAMPLE } from '~lib/utils/setCookie';
 
-export async function getAvatarProfile(): Promise<string> {
-	const responseImage: string = await fetch('https://randomuser.me/api/')
+interface getAvatarProfileReturn {
+	image: string;
+	role: string;
+}
+
+export async function getAvatarProfile(): Promise<getAvatarProfileReturn> {
+	const responseImage = await fetch('https://api.github.com/users/rxyhn')
 		.then(async res => await res.json())
 		.then(data => {
 			console.log(data);
-			return data.results[0].picture.medium;
+			return {
+				image: data.avatar_url,
+				role: data.type,
+			};
 		});
 
 	return responseImage;
@@ -51,9 +59,9 @@ export function withAuthGSSP(
 		try {
 			const queryClient = new QueryClient();
 
-			const data = await queryClient.fetchQuery(
+			await queryClient.fetchQuery(
 				['avatar', 'data'],
-				async (): Promise<string> => await getAvatarProfile()
+				async (): Promise<getAvatarProfileReturn> => await getAvatarProfile()
 			);
 
 			return callBackFn !== undefined
@@ -65,7 +73,7 @@ export function withAuthGSSP(
 				: {
 						props: {
 							token: cookieAuthToken,
-							profileImage: data,
+							dehydratedState: dehydrate(queryClient),
 						},
 				  };
 		} catch (err) {

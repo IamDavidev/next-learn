@@ -10,7 +10,6 @@ import { AuthContext } from '~lib/context';
 
 const AuthPage: NextPage = (): JSX.Element => {
 	const { auth } = useContext(AuthContext);
-	console.info('🚀 ~>  file: profile.tsx ~>  line 12 ~>  auth', auth);
 
 	return (
 		<PageLayout title='profile page' description='profile auth next'>
